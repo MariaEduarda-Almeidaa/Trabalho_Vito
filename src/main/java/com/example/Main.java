@@ -1,6 +1,6 @@
 package com.example;
 
-// Importa o novo algoritmo
+
 import com.example.algoritmos.EdmondsKarp;
 import com.example.algoritmos.Dijkstra;
 import com.example.algoritmos.Kruskal;
@@ -32,46 +32,53 @@ public class Main {
             int n = g_CM.getNumeroVertices();
             int m = g_CM.getNumeroArestas();
 
-            // Dijkstra (CM)
             inicio = System.nanoTime();
             double[] dist = Dijkstra.executar(g_CM, 1);
             fim = System.nanoTime();
             double cmTempo = (fim - inicio) / 1e9;
             double cmCusto = Dijkstra.custoTotal(dist);
 
-            // Kruskal (AGM)
             inicio = System.nanoTime();
             double kCusto = Kruskal.executar(g_AGM);
             fim = System.nanoTime();
             double kTempo = (fim - inicio) / 1e9;
 
-            // Prim (AGM)
             inicio = System.nanoTime();
             double pCusto = Prim.executar(g_AGM);
             fim = System.nanoTime();
             double pTempo = (fim - inicio) / 1e9;
 
-            // --- Edmonds-Karp (FM) COM TRAVA DE SEGURANÇA ---
             double fmCusto = 0;
             double fmTempo = 0;
 
             if (n > LIMITE_VERTICES_FM) {
-                // Se 'n' for muito grande, nem tenta.
+                
                 System.out.printf("FM: N/A (Grafo com n=%d excede limite de %d para matriz O(V^2))\n", n, LIMITE_VERTICES_FM);
             } else {
-                // Só executa se o grafo for pequeno o suficiente
+                
                 int s = 1;
                 int t = n;
                 
-                inicio = System.nanoTime();
-                fmCusto = EdmondsKarp.executar(g_CM, s, t);
-                fim = System.nanoTime();
-                fmTempo = (fim - inicio) / 1e9;
-                System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
+                try {
+                    inicio = System.nanoTime();
+                    fmCusto = EdmondsKarp.executar(g_CM, s, t);
+                    fim = System.nanoTime();
+                    fmTempo = (fim - inicio) / 1e9;
+                    System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
+                } catch (OutOfMemoryError oom) {
+                    System.err.println("FM: OutOfMemoryError durante cálculo - marcando como N/A");
+                    fmCusto = 0;
+                    fmTempo = 0;
+                } catch (Exception e) {
+                    System.err.println("FM: Erro durante cálculo - " + e.getMessage());
+                    fmCusto = 0;
+                    fmTempo = 0;
+                }
             }
 
-            // Adiciona a linha (com 0 para FM se não foi executado)
-            csv.adicionarLinha(n, m, cmCusto, cmTempo, kCusto, kTempo, pCusto, pTempo, fmCusto, fmTempo);
+            double agmCusto = kCusto;
+            double agmTempo = Math.min(kTempo, pTempo);
+            csv.adicionarLinha(n, m, cmCusto, cmTempo, agmCusto, agmTempo, fmCusto, fmTempo);
 
             System.out.printf("CM: custo=%.2f tempo=%.3fs\n", cmCusto, cmTempo);
             System.out.printf("Kruskal: custo=%.2f tempo=%.3fs\n", kCusto, kTempo);

@@ -12,18 +12,28 @@ public class Dijkstra {
         double[] dist = new double[n + 1];
         Arrays.fill(dist, Double.POSITIVE_INFINITY);
         dist[origem] = 0.0;
+        
+        class Node {
+            int v;
+            double d;
+            Node(int v, double d) { this.v = v; this.d = d; }
+        }
 
-        PriorityQueue<int[]> fila = new PriorityQueue<>(Comparator.comparingDouble(a -> a[1]));
-        fila.add(new int[]{origem, 0});
+        PriorityQueue<Node> fila = new PriorityQueue<>(Comparator.comparingDouble(n1 -> n1.d));
+        fila.add(new Node(origem, 0.0));
 
         while (!fila.isEmpty()) {
-            int u = fila.poll()[0];
+            Node no = fila.poll();
+            int u = no.v;
+            
+            if (no.d > dist[u]) continue;
+
             for (Aresta a : grafo.getAdjacencias().get(u)) {
                 int v = a.getDestino();
                 double novo = dist[u] + a.getPeso();
                 if (novo < dist[v]) {
                     dist[v] = novo;
-                    fila.add(new int[]{v, (int) novo});
+                    fila.add(new Node(v, novo));
                 }
             }
         }

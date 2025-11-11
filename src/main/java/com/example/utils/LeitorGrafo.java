@@ -6,10 +6,9 @@ import java.io.*;
 public class LeitorGrafo {
 
     /**
-     * Lê um arquivo de grafo.
-     * @param caminho Caminho do arquivo .gr
-     * @param isDirigido TRUE = cria grafo dirigido (Dijkstra), FALSE = cria grafo não-dirigido (AGM)
-     * @return O objeto Grafo.
+     * @param caminho 
+     * @param isDirigido 
+     * @return 
      * @throws IOException
      */
     public static Grafo lerArquivo(String caminho, boolean isDirigido) throws IOException {
@@ -30,7 +29,7 @@ public class LeitorGrafo {
                 int v = Integer.parseInt(partes[2]);
                 double peso = Double.parseDouble(partes[3]);
                 
-                // --- AQUI ESTÁ A LÓGICA CORRIGIDA ---
+                
                 if (isDirigido) {
                     g.adicionarArestaDirigida(u, v, peso);
                 } else {
