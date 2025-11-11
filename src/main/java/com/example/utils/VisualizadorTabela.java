@@ -54,6 +54,23 @@ public class VisualizadorTabela extends JFrame {
                     c.setBackground(row % 2 == 0 ? corLinhaPar : corLinhaImpar);
                 }
                 
+                // Formata números com pontuação de separação (fração)
+                if (c instanceof JLabel) {
+                    JLabel label = (JLabel) c;
+                    String texto = label.getText();
+                    try {
+                        double valor = Double.parseDouble(texto);
+                        // Formata com separador de milhares (ponto) e casas decimais (ponto)
+                        label.setText(String.format("%,.2f", valor)); // Padrão americano: 1,234,567.89
+                        label.setHorizontalAlignment(JLabel.CENTER);
+                    } catch (NumberFormatException e) {
+                        // Se não for número, deixa como está
+                        if (c instanceof JLabel) {
+                            ((JLabel) c).setHorizontalAlignment(JLabel.CENTER);
+                        }
+                    }
+                }
+                
                 return c;
             }
         };

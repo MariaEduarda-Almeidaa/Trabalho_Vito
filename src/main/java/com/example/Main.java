@@ -19,9 +19,7 @@ public class Main {
 
         GeradorCSV csv = new GeradorCSV("resultados.csv");
 
-        // --- NOVO: Limite de segurança para a Matriz ---
-        // Vamos definir um limite. Grafos com mais de 50.000 vértices
-        // provavelmente vão quebrar a implementação O(V^2).
+        
         final int LIMITE_VERTICES_FM = 50000;
 
         for (String caminho : instancias) {
