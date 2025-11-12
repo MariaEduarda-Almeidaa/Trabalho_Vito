@@ -25,20 +25,21 @@ public class EdmondsKarp {
             adj.add(new ArrayList<>());
         }
 
-        // Construir grafo residual CORRETAMENTE
+        // Construir grafo residual
         for (int u = 1; u <= V; u++) {
             for (Aresta a : grafo.getAdjacencias().get(u)) {
-                int v = a.getDestino();
-                double cap = a.getPeso();
+                int v = a.getDestino();  // <-- GETTER
+                double cap = a.getPeso(); // <-- GETTER
 
                 if (cap <= 0) continue;
 
-                // Reserva os índices ANTES de adicionar
-                int forwardIdx = adj.get(u).size();
-                int backwardIdx = adj.get(v).size();
+                // Aresta direta
+                Edge forward = new Edge(v, adj.get(v).size(), cap);
+                // Aresta reversa
+                Edge backward = new Edge(u, adj.get(u).size() - 1, 0);
 
-                Edge forward = new Edge(v, backwardIdx, cap);
-                Edge backward = new Edge(u, forwardIdx, 0);
+                forward.revIdx = adj.get(v).size();
+                backward.revIdx = adj.get(u).size() - 1;
 
                 adj.get(u).add(forward);
                 adj.get(v).add(backward);
@@ -53,8 +54,8 @@ public class EdmondsKarp {
             Queue<Integer> q = new LinkedList<>();
             q.add(s);
             parent[s] = -2;
-
             boolean found = false;
+
             while (!q.isEmpty() && !found) {
                 int u = q.poll();
                 for (Edge e : adj.get(u)) {

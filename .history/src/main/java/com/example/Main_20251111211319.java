@@ -3,7 +3,6 @@ package com.example;
 
 import com.example.algoritmos.EdmondsKarp;
 import com.example.algoritmos.Dijkstra;
-import com.example.algoritmos.Dinic;
 import com.example.algoritmos.Kruskal;
 import com.example.algoritmos.Prim;
 import com.example.grafos.*;
@@ -20,6 +19,7 @@ public class Main {
 
         GeradorCSV csv = new GeradorCSV("resultados.csv");
 
+        
         
         for (String caminho : instancias) {
             System.out.println("\n==> Processando: " + caminho);
@@ -55,12 +55,12 @@ public class Main {
 
             try {
                 inicio = System.nanoTime();
-                fmCusto = new Dinic().maxFlow(g_CM, s, t);  // <--- DINIC
+                fmCusto = EdmondsKarp.executar(g_CM, s, t);
                 fim = System.nanoTime();
                 fmTempo = (fim - inicio) / 1e9;
                 System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
             } catch (Exception e) {
-                System.err.println("FM: Erro - " + e.getMessage());
+                System.err.println("FM: Erro durante execução - " + e.getMessage());
                 e.printStackTrace();
                 fmCusto = 0;
                 fmTempo = 0;

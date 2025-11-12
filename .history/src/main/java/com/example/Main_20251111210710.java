@@ -3,7 +3,6 @@ package com.example;
 
 import com.example.algoritmos.EdmondsKarp;
 import com.example.algoritmos.Dijkstra;
-import com.example.algoritmos.Dinic;
 import com.example.algoritmos.Kruskal;
 import com.example.algoritmos.Prim;
 import com.example.grafos.*;
@@ -21,6 +20,8 @@ public class Main {
         GeradorCSV csv = new GeradorCSV("resultados.csv");
 
         
+        final int LIMITE_VERTICES_FM = Integer.MAX_VALUE; 
+
         for (String caminho : instancias) {
             System.out.println("\n==> Processando: " + caminho);
             long inicio, fim;
@@ -50,21 +51,7 @@ public class Main {
             double fmCusto = 0;
             double fmTempo = 0;
 
-            int s = 1;
-            int t = n;
-
-            try {
-                inicio = System.nanoTime();
-                fmCusto = new Dinic().maxFlow(g_CM, s, t);  // <--- DINIC
-                fim = System.nanoTime();
-                fmTempo = (fim - inicio) / 1e9;
-                System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
-            } catch (Exception e) {
-                System.err.println("FM: Erro - " + e.getMessage());
-                e.printStackTrace();
-                fmCusto = 0;
-                fmTempo = 0;
-            }
+            
 
             double agmCusto = kCusto;
             double agmTempo = Math.min(kTempo, pTempo);

@@ -48,23 +48,23 @@ public class Main {
             double pTempo = (fim - inicio) / 1e9;
 
             double fmCusto = 0;
-            double fmTempo = 0;
+double fmTempo = 0;
 
-            int s = 1;
-            int t = n;
+int s = 1;
+int t = n;
 
-            try {
-                inicio = System.nanoTime();
-                fmCusto = new Dinic().maxFlow(g_CM, s, t);  // <--- DINIC
-                fim = System.nanoTime();
-                fmTempo = (fim - inicio) / 1e9;
-                System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
-            } catch (Exception e) {
-                System.err.println("FM: Erro - " + e.getMessage());
-                e.printStackTrace();
-                fmCusto = 0;
-                fmTempo = 0;
-            }
+try {
+    inicio = System.nanoTime();
+    fmCusto = new Dinic().maxFlow(g_CM, s, t);  // <--- DINIC
+    fim = System.nanoTime();
+    fmTempo = (fim - inicio) / 1e9;
+    System.out.printf("FM: custo=%.2f tempo=%.3fs\n", fmCusto, fmTempo);
+} catch (Exception e) {
+    System.err.println("FM: Erro - " + e.getMessage());
+    e.printStackTrace();
+    fmCusto = 0;
+    fmTempo = 0;
+}
 
             double agmCusto = kCusto;
             double agmTempo = Math.min(kTempo, pTempo);

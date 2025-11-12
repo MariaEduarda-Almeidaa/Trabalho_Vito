@@ -1,8 +1,9 @@
 package com.example.algoritmos;
 
+import java.util.*;
+
 import com.example.grafos.Aresta;
 import com.example.grafos.Grafo;
-import java.util.*;
 
 public class Kruskal {
     private static int find(int[] pai, int i) {
@@ -20,8 +21,8 @@ public class Kruskal {
     }
 
     public static double executar(Grafo g) {
-        List<Aresta> arestas = new ArrayList<>(g.getTodasArestas());
-        arestas.sort(null);  // Usa compareTo de Aresta
+        List<Aresta> arestas = g.getTodasArestas();
+        Collections.sort(arestas);
 
         int n = g.getNumeroVertices();
         int[] pai = new int[n + 1], rank = new int[n + 1];
@@ -29,11 +30,10 @@ public class Kruskal {
 
         double custo = 0;
         for (Aresta a : arestas) {
-            int u = a.getOrigem();   // <-- GETTER
-            int v = a.getDestino();  // <-- GETTER
+            int u = a.getOrigem(), v = a.getDestino();
             int ru = find(pai, u), rv = find(pai, v);
             if (ru != rv) {
-                custo += a.getPeso();  // <-- GETTER
+                custo += a.getPeso();
                 union(pai, rank, ru, rv);
             }
         }
